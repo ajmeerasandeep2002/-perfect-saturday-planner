@@ -1,3 +1,4 @@
+
 import { useState, type FormEvent } from 'react'
 import { runPlanner } from './utils/planner'
 import { activities } from './data/mockData'
@@ -221,7 +222,11 @@ function App() {
         error?: string
       }
 
-      if (!response.ok || typeof data.summary !== 'string' || !data.summary.trim()) {
+      if (
+        !response.ok ||
+        typeof data.summary !== 'string' ||
+        !data.summary.trim()
+      ) {
         throw new Error(data.error || 'Gemini summary could not be generated.')
       }
 
@@ -282,30 +287,11 @@ function App() {
       : 'Not available'
 
   // --------------------------------------------------
-  // SUMMARY AND BUDGET TRADE-OFF
+  // SUMMARY
   // --------------------------------------------------
 
   const planSummary =
     result && activeInput ? buildPlanSummary(result, activeInput) : ''
-
-  const remainingBudgetMin =
-    activeInput && result
-      ? Math.max(0, activeInput.budget - result.maxTotalCost)
-      : 0
-
-  const remainingBudgetMax =
-    activeInput && result
-      ? Math.max(0, activeInput.budget - result.minTotalCost)
-      : 0
-
-  const budgetTradeoff =
-    activeInput && result
-      ? result.plan.length === 0
-        ? 'No spending recommendation is available because a suitable itinerary could not be generated.'
-        : result.budgetUtilizationPercent < 60
-          ? 'The estimated spending is well below your budget. The planner chose suitable, lower-cost experiences instead of adding unnecessary activities just to spend more.'
-          : 'The selected experiences fit your preferences while keeping the upper estimated cost within your budget.'
-      : ''
 
   // --------------------------------------------------
   // VALIDATION
@@ -604,30 +590,6 @@ function App() {
                 <div className="rounded-2xl border border-[#e5e8dc] bg-[#eef3eb] p-6">
                   <h3 className="font-bold">Your Saturday at a glance</h3>
 
-                  {result.plan.length > 0 && (
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-xl border border-[#e5e8dc] bg-white p-4">
-                        <p className="text-xs text-gray-500">
-                          Estimated spending
-                        </p>
-                        <p className="mt-2 text-xl font-bold">
-                          ₹{result.minTotalCost.toLocaleString('en-IN')}–₹
-                          {result.maxTotalCost.toLocaleString('en-IN')}
-                        </p>
-                      </div>
-
-                      <div className="rounded-xl border border-[#e5e8dc] bg-white p-4">
-                        <p className="text-xs text-gray-500">
-                          Budget remaining
-                        </p>
-                        <p className="mt-2 text-xl font-bold">
-                          ₹{remainingBudgetMin.toLocaleString('en-IN')}–₹
-                          {remainingBudgetMax.toLocaleString('en-IN')}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
                   <div className="mt-4">
                     {summaryLoading ? (
                       <p
@@ -717,15 +679,6 @@ function App() {
                       <p className="mt-2 text-sm leading-relaxed text-gray-600">
                         Dietary, crowd and travel preferences are checked
                         before the itinerary is presented.
-                      </p>
-                    </div>
-
-                    <div className="mt-4 rounded-xl bg-[#fafbf8] p-4">
-                      <p className="text-sm font-semibold">
-                        The trade-off considered
-                      </p>
-                      <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                        {budgetTradeoff}
                       </p>
                     </div>
                   </div>
