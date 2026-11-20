@@ -1,72 +1,113 @@
 # Saturdayly – Your Perfect Saturday Planner
 
-Saturdayly helps you put together a simple plan for your Saturday. Enter your city, budget, available time, mood and interests, and it suggests activities and a food stop that fit your preferences.
+Saturdayly helps people plan their Saturdays based on their city, budget, available time, mood and interests.
 
-The app currently supports Bangalore, Hyderabad, Chennai and New Delhi.
+Instead of spending time deciding where to go and what to do, users can enter their preferences and get a suggested itinerary with activities, food options and estimated travel time.
 
-## What it does
+## Features
 
-- Suggests activities based on your interests and mood.
-- Filters food options based on vegetarian or non-vegetarian preferences.
-- Takes your budget and available time into account.
-- Shows estimated price ranges instead of treating prices as fixed.
-- Estimates travel time and distance between stops.
-- Explains why each activity or food stop was recommended.
-- Checks the final plan against your budget, time and selected constraints.
+- Personalized activity recommendations based on interests and mood.
+- Budget-aware planning with estimated costs.
+- Itinerary generation based on available time.
+- Vegetarian and non-vegetarian food preferences.
+- Options to avoid crowded places and long travel.
+- Estimated distance and travel time between activities.
+- Explanations for why each activity was recommended.
+- Plan validation to check budget, time and user preferences.
+- Gemini-powered itinerary summary, with a fallback summary if the API is unavailable.
 
-## How the planner works
+The application currently supports Bangalore, Hyderabad, Chennai and New Delhi.
 
-The planner uses a local sample dataset of activities and food options for the four supported cities. It reads the preferences entered in the form, filters and ranks suitable activities and food options, compares possible combinations, estimates costs and travel, and checks the selected plan before showing it.
+## Technology Used
 
-The recommendation logic is rule-based. It uses the selected interests, mood, budget, time, category variety and estimated travel when comparing plans. The preferred budget range is 60–80% of the entered budget, but the planner does not add activities just to spend more.
-
-## Tech used
-
-- React
-- TypeScript
+- React and TypeScript
 - Vite
 - Tailwind CSS
+- Google Gemini API
+- Vercel for deployment
 
-## Run it locally
+## How It Works
 
-You need Node.js and npm installed.
+The planner uses separate functions for different tasks:
 
-1. Clone the repository or download the project.
-2. Open a terminal in the project folder.
-3. Install the dependencies:
+1. Reads and processes the user's preferences.
+2. Finds suitable activities and food options.
+3. Estimates costs.
+4. Builds an itinerary based on the user's budget, interests and available time.
+5. Checks whether the plan satisfies the user's constraints.
+6. Generates a short summary using Gemini.
 
-   ```bash
-   npm install
-   ```
+The main planning logic works independently of Gemini. Gemini is used to generate the final natural-language summary.
 
-4. Start the development server:
+## Project Structure
 
-   ```bash
-   npm run dev
-   ```
+```text
+src/
+  data/          - Activity and food data
+  types/         - TypeScript interfaces
+  utils/         - Planner logic
+  App.tsx        - Main application
+  index.css      - Styling
 
-5. Open the local URL printed in the terminal.
+api/
+  summarize.ts   - Gemini summary API
 
-To create a production build, run:
-
-```bash
-npm run build
+scripts/
+  test-planner.ts - Planner tests
 ```
 
-To run the planner tests, run:
+## Running Locally
+
+Make sure Node.js and npm are installed.
+
+Clone the repository:
+
+```bash
+git clone https://github.com/ajmeerasandeep2002/-perfect-saturday-planner.git
+cd -perfect-saturday-planner
+```
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+Start the frontend:
+
+```bash
+npm run dev
+```
+
+Open the local URL shown in the terminal.
+
+The Gemini summary feature also requires the API key to be configured in the deployment environment.
+
+## Testing
+
+Run the planner tests:
 
 ```bash
 npx tsx scripts/test-planner.ts
 ```
 
-If PowerShell blocks the `npm` command on Windows, use `npm.cmd` instead. For example, `npm.cmd run dev` or `npm.cmd run build`.
+Build the application:
 
-## Notes about estimates
+```bash
+npm run build
+```
 
-The activity, food and price information is sample data included with the project. The price range shown for each stop is an estimate based on its sample price; actual prices may be different.
+The planner has been tested for different cities, budget limits, food preferences, available time and crowd preferences.
 
-Travel distances and times are also estimates based on approximate coordinates. They are not live directions and do not include real-time traffic. The app does not currently connect to a maps, restaurant, booking or live traffic API.
+## Notes
 
-## AI tools used
+- Activity and food information currently comes from a local dataset.
+- Prices are estimates and may differ from actual prices.
+- Travel distances and times are approximate, not based on live traffic.
+- If Gemini is unavailable, the application displays a planner-generated summary instead.
 
-I used ChatGPT as a coding assistant while building the app. It helped me work through the planner logic, improve the recommendation scoring, debug issues and prepare test cases. The current app itself uses local sample data and rule-based recommendations; it does not call an LLM API.
+## AI Tools Used
+
+Google Gemini API is used to generate a short summary of the recommended itinerary.
+
+AI coding assistance was used during development for debugging, improving the recommendation logic and testing the application.
