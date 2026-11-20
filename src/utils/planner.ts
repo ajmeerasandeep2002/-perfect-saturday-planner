@@ -894,11 +894,12 @@ export function runPlanner(input: PlannerInput): PlannerResult {
 
   if (plan.length === 0) {
     validation.valid = false
-    validation.messages.push(
-      'No suitable itinerary could be created for this city, budget and available time.',
-    )
-  }
 
+    validation.messages = [
+      'No suitable itinerary could be generated with the current inputs.',
+      'Try increasing your available time or budget, or relaxing one optional preference.',
+    ]
+  }
   const totalActivityDuration = plan.reduce(
     (total, item) => total + item.durationMinutes,
     0,
