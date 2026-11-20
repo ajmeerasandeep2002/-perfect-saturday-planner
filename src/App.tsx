@@ -614,9 +614,6 @@ function App() {
                           ₹{result.minTotalCost.toLocaleString('en-IN')}–₹
                           {result.maxTotalCost.toLocaleString('en-IN')}
                         </p>
-                        <p className="mt-1 text-xs text-gray-500">
-                          Approximate total range
-                        </p>
                       </div>
 
                       <div className="rounded-xl border border-[#e5e8dc] bg-white p-4">
@@ -626,9 +623,6 @@ function App() {
                         <p className="mt-2 text-xl font-bold">
                           ₹{remainingBudgetMin.toLocaleString('en-IN')}–₹
                           {remainingBudgetMax.toLocaleString('en-IN')}
-                        </p>
-                        <p className="mt-1 text-xs text-gray-500">
-                          Approximate remaining range
                         </p>
                       </div>
                     </div>

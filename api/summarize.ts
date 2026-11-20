@@ -111,7 +111,20 @@ export default {
       }
 
       // Create the Gemini client on the server.
-      const ai = new GoogleGenAI({ apiKey })
+      // Create the Gemini client with automatic retries.
+        const ai = new GoogleGenAI({
+        apiKey,
+        httpOptions: {
+            retryOptions: {
+            attempts: 3,
+            initialDelay: 1,
+            maxDelay: 4,
+            expBase: 2,
+            jitter: 1,
+            httpStatusCodes: [408, 429, 500, 502, 503, 504],
+            },
+        },
+        })
 
       const response = await ai.models.generateContent({
         model: 'gemini-3.8-flash',
